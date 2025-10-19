@@ -1,0 +1,32 @@
+{
+    "name": "ecm2414-coursework",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "redhat.java",
+                "streetsidesoftware.code-spell-checker"
+            ],
+
+            "settings": {
+                "files.eol": "\n",
+                "files.encoding": "utf8",
+                "files.insertFinalNewline": true,
+                "files.trimFinalNewlines": false,
+                "files.trimTrailingWhitespace": true
+            }
+        }
+    },
+
+    "mounts": [
+        {
+            "source": "${localWorkspaceFolder}",
+            "target": "/workspace",
+            "type": "bind"
+        }
+    ]
+}
