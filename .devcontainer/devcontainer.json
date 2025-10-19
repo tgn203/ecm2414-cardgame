@@ -28,5 +28,7 @@
             "target": "/workspace",
             "type": "bind"
         }
-    ]
+    ],
+
+    "remoteUser": "vscode"
 }
