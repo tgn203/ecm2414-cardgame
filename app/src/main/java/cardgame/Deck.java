@@ -1,6 +1,6 @@
 // Deck.java
 
-package main.java.cardgame;
+package cardgame;
 
 import java.util.LinkedList;
 import java.util.Queue;

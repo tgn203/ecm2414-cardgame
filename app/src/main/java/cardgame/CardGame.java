@@ -1,6 +1,6 @@
 // CardGame.java
 
-package main.java.cardgame;
+package cardgame;
 
 import java.io.File;
 import java.io.FileWriter;

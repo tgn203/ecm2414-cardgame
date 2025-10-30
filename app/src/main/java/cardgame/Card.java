@@ -1,6 +1,6 @@
 // Card.java
 
-package main.java.cardgame;
+package cardgame;
 
 /**
  * Thread-safe card class.

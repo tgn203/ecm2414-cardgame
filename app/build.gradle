@@ -1,0 +1,17 @@
+plugins {
+    // Required plugins for developing CLI applications
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Install JUnit 5
+    testImplementation 'junit:junit:4.13.2'
+}
+
+application {
+    mainClass = 'cardgame.CardGame.java'
+}
