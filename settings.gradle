@@ -1,0 +1,2 @@
+rootProject.name = 'ecm2414-coursework-cardgame'
+include('app')
