@@ -71,4 +71,40 @@ public class DeckTest {
         deck.addCard(new Card(10));
         assertEquals("5 10", deck.contentsAsString());
     }
+
+    /**
+     * Tests that the synchronised deck array can be accessed by multiple threads.
+     *
+     * @throws InterruptedException
+     */
+    @Test
+    public void testThreadSafety() throws InterruptedException {
+        // Create a deck with 1000 cards in it.
+        Deck deck = new Deck();
+        for (int i = 0; i < 1000; i++) {
+            deck.addCard(new Card(i));
+        }
+
+        // Test that two anonymous threads can both draw from the deck.
+        // Each draws 500 cards (1,000 total).
+        Thread t1 = new Thread(() -> {
+            for (int i = 0; i < 500; i++) {
+                deck.drawCard();
+            }
+        });
+        Thread t2 = new Thread(() -> {
+            for (int i = 0; i < 500; i++) {
+                deck.drawCard();
+            }
+        });
+
+        // Start the threads.
+        t1.start();
+        t2.start();
+        t1.join();
+        t2.join();
+
+        // Deck should now be empty (size = 0).
+        assertEquals(0, deck.size());
+    }
 }
