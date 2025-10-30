@@ -154,7 +154,7 @@ public class CardGame {
      * @throws IOException
      */
     private void initPlayers(int n) throws IOException {
-        for (int i = 0; i < n; n++) {
+        for (int i = 0; i < n; i++) {
             Deck left = decks.get(i);
             Deck right = decks.get((i+1) % n);  // Loop back at the end.
             players.add(new Player(left, right));
@@ -182,9 +182,21 @@ public class CardGame {
         }
     }
 
+    /**
+     * Writes the contents of each deck into an output file.
+     */
     private void writeDeckOutputs() {
+        // If not present, generate the output directory.
+        File outDir = new File("out");
+        if (!outDir.exists()) {
+            outDir.mkdirs();
+        }
+
+        // Create each deck log file in the output directory
         for (Deck d : decks) {
-            try (FileWriter f = new FileWriter("deck" + d.getDeckId() + "_output.txt")) {
+            File deckFile = new File(outDir, "deck" + d.getDeckId() + "_output.txt");
+
+            try (FileWriter f = new FileWriter(deckFile)) {
                 f.write("deck" + d.getDeckId() + " contents: " + d.contentsAsString() + "\n");
             } catch (IOException e) {
                 System.err.println("Error writing deck file: " + e.getMessage());

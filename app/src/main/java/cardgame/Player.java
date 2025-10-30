@@ -2,6 +2,7 @@
 
 package cardgame;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -41,7 +42,16 @@ public class Player implements Runnable {
         this.rightDeck = rightDeck;
         this.hand = new ArrayList<>(4);
         this.random = new Random();
-        this.log = new PrintWriter(new FileWriter("player" + playerId + "_output.txt"), true);
+
+        // If not present, create the output directory.
+        File outDir = new File("out");
+        if (!outDir.exists()) {
+            outDir.mkdirs();
+        }
+
+        // Create the player log file in the output directory
+        File logFile = new File(outDir, "player" + playerId + "_output.txt");
+        this.log = new PrintWriter(new FileWriter(logFile), true);
     }
 
     /**
@@ -129,12 +139,23 @@ public class Player implements Runnable {
      * Executes one atomic turn (a draw and a discard).
      */
     private void drawAndDiscard() {
-        // Use synchronised decks as locks
-        synchronized (leftDeck) {
-            synchronized (rightDeck) {
-                // If any player has won, stop playing:
-                if (winnerId != null) return;
+        // If any player has won, stop playing:
+        if (winnerId != null) return;
 
+        // Determine the deck to lock first to prevent deadlock.
+        // Players lock their decks in ascending order by ID.
+        Object firstLock;
+        Object secondLock;
+        if (leftDeck.getDeckId() < rightDeck.getDeckId()) {
+            firstLock = leftDeck;
+            secondLock = rightDeck;
+        } else {
+            firstLock = rightDeck;
+            secondLock = leftDeck;
+        }
+        // Use synchronised decks as locks
+        synchronized (firstLock) {
+            synchronized (secondLock) {
                 // Draw a new card:
                 Card drawn = leftDeck.drawCard();
                 if (drawn == null) return;
